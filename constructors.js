@@ -107,7 +107,7 @@
    * @return {boolean} success  Whether mana was successfully spent.
    */
    
-  function spendMana(cost) {
+  this.spendMana = function(cost) {
    if(this.mana >= cost) {
     this.mana -= cost;
     return true;
@@ -141,7 +141,7 @@
    * @param  {Spellcaster} target         The spell target to be inflicted.
    * @return {boolean}                    Whether the spell was successfully cast.
    */
- function invoke(spell, target) {
+ this.invoke = function(spell, target) {
      // verify argument types with instanceof
      // Spell || DamageSpell, 
      //   Spellcaster if DamageSpell
