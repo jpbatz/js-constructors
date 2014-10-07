@@ -88,13 +88,19 @@ function Spell(name, cost, description) {
    * @name inflictDamage
    * @param  {number} damage  Amount of damage to deal to the spellcaster
    */
-   this.inflictDamage = function(damage) {
-    this.health -= damage;
-    if(this.health < 0) {
-     this.health = 0;
-     this.isAlive = false;
-    } 
-   };
+    this.inflictDamage = function(damage) {
+
+      if(this.health === 0) {
+        this.isAlive = false;
+      } else if(this.health <= damage) {
+        this.health = 0;
+        this.isAlive = false;
+      } else if(this.health > damage) {
+        this.health -= damage;
+        this.isAlive = true;
+      }
+
+    };
      
   /**
    * Reduces the spellcaster's mana by `cost`.
