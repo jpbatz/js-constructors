@@ -52,16 +52,15 @@
  * @property {string} description
  */
  
- function DamageSpell(name, cost, damage, description) {
-     this.name = name;
-     this.cost = cost;
-     this.damage = damage;
-     this.description = description;
-     
- }
- 
  DamageSpell.prototype = new Spell();
- 
+  
+ function DamageSpell(name, cost, damage, description) {
+     this.name = name;                 // should inherit from spell
+     this.cost = cost;                 // should inherit from spell
+     this.damage = damage;
+     this.description = description;   // should inherit from spell
+ }
+
 /**
  * Now that you've created some spells, let's create
  * `Spellcaster` objects that can use them!
