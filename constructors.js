@@ -141,9 +141,9 @@
    */
 
  this.invoke = function(spell, target) {
-// instanceof is true for Spell AND DamageSpell due to inheritance
-// only way to be sure spell argument is not a DamageSpell alone is 
-// to test for it with (!spell instanceof DamageSpell)
+// when a Spell instance is expected for spell argument, instanceof is true for Spell AND DamageSpell due to inheritance.
+// only way to be sure spell argument is not actually a DamageSpell alone is to test for it with (!spell instanceof DamageSpell)
+// spell can have undefined target or bogus target specified
      if( (spell instanceof Spell)&&(!spell instanceof DamageSpell) || ((spell instanceof DamageSpell)&&(target instanceof Spellcaster))) {
          console.log("Arguments are valid");
          
