@@ -92,12 +92,15 @@ function Spell(name, cost, description) {
 
       if(this.health === 0) {
         this.isAlive = false;
+        return false;
       } else if(this.health <= damage) {
         this.health = 0;
         this.isAlive = false;
+        return false;
       } else if(this.health > damage) {
         this.health -= damage;
         this.isAlive = true;
+        return true;
       }
 
     };
@@ -112,13 +115,13 @@ function Spell(name, cost, description) {
    */
    
   this.spendMana = function(cost) {
-   if(this.mana >= cost) {
-    this.mana -= cost;
-    return true;
-   } else {
-   return false;
-  }
- } 
+    if(this.mana >= cost) {
+      this.mana -= cost;
+      return true;
+    } else {
+      return false;
+    }
+  }; 
  
   /**
    * Allows the spellcaster to cast spells.
@@ -147,31 +150,45 @@ function Spell(name, cost, description) {
    */
 
  this.invoke = function(spell, target) {
-// when a Spell instance is expected for spell argument, instanceof is true for Spell AND DamageSpell due to inheritance.
-// only way to be sure spell argument is not actually a DamageSpell alone is to test for it with (!spell instanceof DamageSpell)
-// spell can have undefined target or bogus target specified
-     if( (spell instanceof Spell)&&(!spell instanceof DamageSpell) || ((spell instanceof DamageSpell)&&(target instanceof Spellcaster))) {
-         console.log("Arguments are valid");
-         
-     // inflictDamage()
-    if((spell instanceof DamageSpell)&&(target instanceof Spellcaster)) {
-        target.inflictDamage(spell.cost);
-        return true;
-    }
-     // spendMana()
-    if(spell instanceof Spell) {
-      if(this.mana >= spell.cost) {
+
+
+  if(spell instanceof DamageSpell && target instanceof Spellcaster){
+    console.log(spell.name + " is an instance of DamageSpell");
+    console.log(target.name + " is an instance of Spellcaster");
+
+    console.log("mana: " + this.mana + " spell.cost: " + spell.cost);
+    console.log("target.mana: " + target.mana + " target.damage: " + spell.damage);
+
+    if(this.mana >= spell.cost && target.health >= spell.damage) {
+      console.log("we have enough mana, target has enough health");
+      if(target.isAlive) {
+        if(target.inflictDamage(spell.damage)) {
           this.spendMana(spell.cost);
           return true;
+        } else {
+          return false;
+        } 
+      } else {
+        return false;
+      }
+    } else {
+      return false;
     }
-
+  } else if(spell instanceof Spell) {
+    console.log(spell.name + " is an instance of Spell");
+    if(this.mana >= spell.cost) {
+      this.spendMana(spell.cost);
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
   }
-        // return true;
-     } else {
-         console.log("Arguments are invalid");
-         return false;
-     }
-     // return boolean, whether spell was successfully cast
- };
+
+
+
+
  
+  };
 }
