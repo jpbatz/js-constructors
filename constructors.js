@@ -55,10 +55,8 @@
  DamageSpell.prototype = new Spell();
   
  function DamageSpell(name, cost, damage, description) {
-     this.name = name;                 // should inherit from spell
-     this.cost = cost;                 // should inherit from spell
+     Spell.call(this, name, cost,description);
      this.damage = damage;
-     this.description = description;   // should inherit from spell
  }
 
 /**
