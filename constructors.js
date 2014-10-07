@@ -174,7 +174,7 @@ function Spell(name, cost, description) {
     } else {
       return false;
     }
-  } else if(spell instanceof Spell) {
+  } else if((spell instanceof Spell) && !(spell instanceof DamageSpell)) {
     console.log(spell.name + " is an instance of Spell");
     if(this.mana >= spell.cost) {
       this.spendMana(spell.cost);
