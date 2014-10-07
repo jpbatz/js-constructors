@@ -10,7 +10,8 @@
  * @property {string} description
  */
  
- function Spell(name, cost, description) {
+function Spell(name, cost, description) {
+
   this.name = name;
   this.cost = cost;
   this.description = description;
@@ -21,10 +22,9 @@
    * @name printDetails
    */
   this.printDetails = function() {
-    console.log("Name: " + this.name);
-    console.log("Cost: " + this.cost);
-    console.log("Description: " + this.description);
+    console.log(this.name + " " + this.cost + " " + this.description);
   };
+
 }
 
 /**
