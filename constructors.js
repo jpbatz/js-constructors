@@ -75,6 +75,12 @@
  * @property {boolean} isAlive  Default value should be `true`.
  */
 
+  function Spellcaster(name, health, mana) {
+   this.name = name;
+   this.health = health;      // points must always >= 0 (s/b static?)
+   this.mana = mana;
+   this.isAlive = true;       // s/b static?
+     
   /**
    * The spellcaster loses health equal to `damage`.
    * Health should never be negative.
@@ -84,7 +90,14 @@
    * @name inflictDamage
    * @param  {number} damage  Amount of damage to deal to the spellcaster
    */
-
+   this.inflictDamage = function(damage) {
+    this.health -= damage;
+    if(this.health < 0) {
+     this.health = 0;
+     this.isAlive = false;
+    } 
+   };
+     
   /**
    * Reduces the spellcaster's mana by `cost`.
    * Mana should only be reduced only if there is enough mana to spend.
@@ -93,7 +106,16 @@
    * @param  {number} cost      The amount of mana to spend.
    * @return {boolean} success  Whether mana was successfully spent.
    */
-
+   
+  function spendMana(cost) {
+   if(this.mana >= cost) {
+    this.mana -= cost;
+    return true;
+   } else {
+   return false;
+  }
+ } 
+ 
   /**
    * Allows the spellcaster to cast spells.
    * The first parameter should either be a `Spell` or `DamageSpell`.
@@ -119,3 +141,14 @@
    * @param  {Spellcaster} target         The spell target to be inflicted.
    * @return {boolean}                    Whether the spell was successfully cast.
    */
+ function invoke(spell, target) {
+     // verify argument types with instanceof
+     // Spell || DamageSpell, 
+     //   Spellcaster if DamageSpell
+     // inflictDamage()
+     // spendMana()
+     
+     // return boolean, whether spell was successfully cast
+ }
+ 
+}
