@@ -145,10 +145,16 @@
      // verify argument types with instanceof
      // Spell || DamageSpell, 
      //   Spellcaster if DamageSpell
+     if( ((spell instanceof Spell)&&(target === undefined)) || ((spell instanceof DamageSpell)&(target instanceof Spellcaster))) {
+         console.log("Arguments are valid");
      // inflictDamage()
      // spendMana()
-     
+        return true;
+     } else {
+         console.log("Arguments are invalid");
+         return false;
+     }
      // return boolean, whether spell was successfully cast
- }
+ };
  
 }
