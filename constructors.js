@@ -139,15 +139,26 @@
    * @param  {Spellcaster} target         The spell target to be inflicted.
    * @return {boolean}                    Whether the spell was successfully cast.
    */
+
  this.invoke = function(spell, target) {
-     // verify argument types with instanceof
-     // Spell || DamageSpell, 
-     //   Spellcaster if DamageSpell
-     if( ((spell instanceof Spell)&&(target === undefined)) || ((spell instanceof DamageSpell)&(target instanceof Spellcaster))) {
+
+     if( (spell instanceof Spell) || ((spell instanceof DamageSpell)&&(target instanceof Spellcaster))) {
          console.log("Arguments are valid");
+         
      // inflictDamage()
-     // spendMana()
+    if((spell instanceof DamageSpell)&&(target instanceof Spellcaster)) {
+        target.inflictDamage(spell.cost);
         return true;
+    }
+     // spendMana()
+    if(spell instanceof Spell) {
+      if(this.mana >= spell.cost) {
+          this.spendMana(spell.cost);
+          return true;
+    }
+      
+  }
+        // return true;
      } else {
          console.log("Arguments are invalid");
          return false;
