@@ -158,7 +158,7 @@
           this.spendMana(spell.cost);
           return true;
     }
-      
+
   }
         // return true;
      } else {
