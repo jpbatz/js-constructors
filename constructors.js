@@ -22,7 +22,8 @@ function Spell(name, cost, description) {
    * @name printDetails
    */
   this.printDetails = function() {
-    console.log(this.name + " " + this.cost + " " + this.description);
+    console.log(this.name + " " + this.cost + " " + this.description); // faster
+    // console.log("%s %d %s", this.name, this.cost, this.description);  // c-style, does not work here
   };
 
 }
@@ -55,7 +56,7 @@ function Spell(name, cost, description) {
 DamageSpell.prototype = new Spell();
   
 function DamageSpell(name, cost, damage, description) {
-  Spell.call(this, name, cost,description);
+  Spell.call(this, name, cost,description);   // like super()
   this.damage = damage;
 }
 
