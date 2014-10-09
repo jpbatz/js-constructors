@@ -76,9 +76,9 @@ function DamageSpell(name, cost, damage, description) {
 function Spellcaster(name, health, mana) {
 
   this.name = name;
-  this.health = health;      // points must always >= 0 (s/b static?)
+  this.health = health;                      // points must always >= 0
   this.mana = mana;
-  this.isAlive = true;       // s/b static?
+  this.isAlive = true;
      
   /**
    * The spellcaster loses health equal to `damage`.
@@ -91,17 +91,13 @@ function Spellcaster(name, health, mana) {
    */
   this.inflictDamage = function(damage) {
 
-    if(this.health === 0) {
+    if(this.health <= 0) {
       this.isAlive = false;
-      return false;
     } else if(this.health <= damage) {
       this.health = 0;
       this.isAlive = false;
-      return false;
     } else if(this.health > damage) {
       this.health -= damage;
-      this.isAlive = true;
-      return true;
     }
 
   };
@@ -152,39 +148,31 @@ function Spellcaster(name, health, mana) {
 
   this.invoke = function(spell, target) {
 
-    if(spell instanceof DamageSpell && target instanceof Spellcaster){
-    //console.log(spell.name + " is an instance of DamageSpell");
-    //console.log(target.name + " is an instance of Spellcaster");
-
-    //console.log("mana: " + this.mana + " spell.cost: " + spell.cost);
-    //console.log("target.mana: " + target.mana + " target.damage: " + spell.damage);
-
-      if(this.mana >= spell.cost && target.health >= spell.damage) {
-      //console.log("we have enough mana, target has enough health");
-        if(target.isAlive) {
-          if(target.inflictDamage(spell.damage)) {
-            this.spendMana(spell.cost);
-            return true;
-          } else {
-            return false; // could not inflictDamage and did not spendMana
-          } 
-        } else {
-          return false;   // target is not alive
-        }
-      } else {
-        return false;     // not enough mana to spend, not enough health on target
-      }
-    } else if((spell instanceof Spell) && !(spell instanceof DamageSpell)) {
-    //console.log(spell.name + " is an instance of Spell");
+    if((spell instanceof Spell) && !(spell instanceof DamageSpell) && (typeof target === "undefined")) {
+    // spell should not be and instance of Spell, only SpellDamage (due to "inheritance")
       if(this.mana >= spell.cost) {
         this.spendMana(spell.cost);
         return true;
-      } else {
-        return false;     // not enough mana to spend
+      } else {      // not enough mana to spend
+        return false;
       }
-    } else {
-      return false;       // invalid argument(s) 
+    } else if(spell instanceof DamageSpell && target instanceof Spellcaster){
+      if(this.mana >= spell.cost && target.health >= spell.damage) {
+      // we have enough mana, target has enough health
+          if(target.isAlive) {
+            target.inflictDamage(spell.damage);
+            this.spendMana(spell.cost);
+            return true;
+          } else {  // could not inflictDamage and did not spendMana
+            return false;
+          } 
+      } else {      // not enough mana to spend, not enough health on target
+        return false;
+      }
+    } else {        // invalid argument(s) supplied
+      return false; 
     }
- 
-  };
-}
+
+  };  // end invoke()
+
+} // end Spellcaster
