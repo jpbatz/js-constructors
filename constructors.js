@@ -1,3 +1,4 @@
+/*
 - * Creates a generic spell that can be cast.
 - *
 - * @name Spell
@@ -8,26 +9,22 @@
 - * @property {number} cost
 - * @property {string} description
 - */
-- 
--function Spell(name, cost, description) {
--
--  this.name = name;
--  this.cost = cost;
--  this.description = description;
--
--  /**
+
+function Spell(name, cost, description) {
+  this.name = name;
+  this.cost = cost;
+  this.description = description;
+  /**
 -   * Print out all spell details and format it nicely.
 -   * The format doesnt matter, as long as it contains the spell name, cost, and description.
 -   * @name printDetails
 -   */
--  this.printDetails = function() {
--    console.log(this.name + " " + this.cost + " " + this.description); // faster
--    // console.log("%s %d %s", this.name, this.cost, this.description);  // c-style, does not work here
--  };
--
--}
--
--/**
+  this.printDetails = function() {
+    console.log(this.name + " " + this.cost + " " + this.description); // faster
+    // console.log("%s %d %s", this.name, this.cost, this.description);  // c-style, does not work here
+  };
+}
+/**
 - * A spell that deals damage.
 - * We want to keep this code DRY (Don't Repeat Yourself).
 - *
@@ -51,15 +48,14 @@
 - * @property {number} damage
 - * @property {string} description
 - */
-- 
--DamageSpell.prototype = new Spell();
--  
--function DamageSpell(name, cost, damage, description) {
--  Spell.call(this, name, cost,description);   // like super()
--  this.damage = damage;
--}
--
--/**
+
+DamageSpell.prototype = new Spell();
+
+function DamageSpell(name, cost, damage, description) {
+  Spell.call(this, name, cost,description);   // like super()
+  this.damage = damage;
+}
+/**
 - * Now that you've created some spells, let's create
 - * `Spellcaster` objects that can use them!
 - *
@@ -72,15 +68,13 @@
 - * @property {mana} mana
 - * @property {boolean} isAlive  Default value should be `true`.
 - */
--
--function Spellcaster(name, health, mana) {
--
--  this.name = name;
--  this.health = health;                      // points must always >= 0
--  this.mana = mana;
--  this.isAlive = true;
--     
--  /**
+function Spellcaster(name, health, mana) {
+  this.name = name;
+  this.health = health;                      // points must always >= 0
+  this.mana = mana;
+  this.isAlive = true;
+
+  /**
 -   * The spellcaster loses health equal to `damage`.
 -   * Health should never be negative.
 -   * If the spellcaster's health drops to 0,
@@ -89,20 +83,20 @@
 -   * @name inflictDamage
 -   * @param  {number} damage  Amount of damage to deal to the spellcaster
 -   */
--  this.inflictDamage = function(damage) {
--
--    if(this.health <= 0) {
--      this.isAlive = false;
--    } else if(this.health <= damage) {
--      this.health = 0;
--      this.isAlive = false;
--    } else if(this.health > damage) {
--      this.health -= damage;
--    }
--
--  };
--     
--  /**
+  this.inflictDamage = function(damage) {
+
+    if(this.health <= 0) {
+      this.isAlive = false;
+    } else if(this.health <= damage) {
+      this.health = 0;
+      this.isAlive = false;
+    } else if(this.health > damage) {
+      this.health -= damage;
+    }
+
+  };
+     
+  /**
 -   * Reduces the spellcaster's mana by `cost`.
 -   * Mana should only be reduced only if there is enough mana to spend.
 -   *
@@ -110,17 +104,17 @@
 -   * @param  {number} cost      The amount of mana to spend.
 -   * @return {boolean} success  Whether mana was successfully spent.
 -   */
--   
--  this.spendMana = function(cost) {
--    if(this.mana >= cost) {
--      this.mana -= cost;
--      return true;
--    } else {
--      return false;
--    }
--  }; 
-- 
--  /**
+
+  this.spendMana = function(cost) {
+    if(this.mana >= cost) {
+      this.mana -= cost;
+      return true;
+    } else {
+      return false;
+    }
+  }; 
+
+  /**
 -   * Allows the spellcaster to cast spells.
 -   * The first parameter should either be a `Spell` or `DamageSpell`.
 -   * If it is a `DamageSpell`, the second parameter should be a `Spellcaster`.
@@ -145,34 +139,34 @@
 -   * @param  {Spellcaster} target         The spell target to be inflicted.
 -   * @return {boolean}                    Whether the spell was successfully cast.
 -   */
--
--  this.invoke = function(spell, target) {
--
--    if((spell instanceof Spell) && !(spell instanceof DamageSpell) && (typeof target === "undefined")) {
--    // spell should not be and instance of Spell, only SpellDamage (due to "inheritance")
--      if(this.mana >= spell.cost) {
--        this.spendMana(spell.cost);
--        return true;
--      } else {      // not enough mana to spend
--        return false;
--      }
--    } else if(spell instanceof DamageSpell && target instanceof Spellcaster){
--      if(this.mana >= spell.cost && target.health >= spell.damage) {
--      // we have enough mana, target has enough health
--          if(target.isAlive) {
--            target.inflictDamage(spell.damage);
--            this.spendMana(spell.cost);
--            return true;
--          } else {  // could not inflictDamage and did not spendMana
--            return false;
--          } 
--      } else {      // not enough mana to spend, not enough health on target
--        return false;
--      }
--    } else {        // invalid argument(s) supplied
--      return false; 
--    }
--
--  };  // end invoke()
--
--} // end Spellcaster
+
+  this.invoke = function(spell, target) {
+
+    if((spell instanceof Spell) && !(spell instanceof DamageSpell) && (typeof target === "undefined")) {
+    // spell should not be and instance of Spell, only SpellDamage (due to "inheritance")
+      if(this.mana >= spell.cost) {
+        this.spendMana(spell.cost);
+        return true;
+      } else {      // not enough mana to spend
+        return false;
+      }
+    } else if(spell instanceof DamageSpell && target instanceof Spellcaster){
+      if(this.mana >= spell.cost && target.health >= spell.damage) {
+      // we have enough mana, target has enough health
+          if(target.isAlive) {
+            target.inflictDamage(spell.damage);
+            this.spendMana(spell.cost);
+            return true;
+          } else {  // could not inflictDamage and did not spendMana
+            return false;
+          } 
+      } else {      // not enough mana to spend, not enough health on target
+        return false;
+      }
+    } else {        // invalid argument(s) supplied
+      return false; 
+    }
+
+  };  // end invoke()
+
+} // end Spellcaster
